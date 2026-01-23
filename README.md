@@ -1,6 +1,6 @@
 # DIAL Compiler (WebAssembly target)
 
-Compiler for **DIAL**, a custom programming language designed and implemented as a coursework project for **Language Processors** (UCM, 2023–2024).
+Compiler for **DIAL**, a custom programming language designed and implemented as a coursework project for **Language Processors** (UCM, 2024–2025).
 The compiler generates **WebAssembly Text (WAT)** and can be executed as **WASM** using a small Node.js runtime.
 
 ## Authors
