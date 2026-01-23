@@ -1,0 +1,13 @@
+# Instrucción while: simple con un break
+
+func int main(){
+	real i = 0;
+	while(i < 10){
+		i += 1;
+		break;
+		i += 100000;
+	} 
+	print(i); # Imprime 1
+	
+	return 0;
+}

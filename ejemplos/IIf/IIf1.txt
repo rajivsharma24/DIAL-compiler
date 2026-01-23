@@ -1,0 +1,13 @@
+# Instrucción if simple
+
+func int main(){
+	int x = 0;
+	if(x == 0){
+		x +=1;
+	}
+	else{
+		x +=2;
+	}
+	
+	print(x); # Muestra 1
+}

@@ -1,0 +1,10 @@
+# Instrucción for con break
+
+func int main(){
+	for(int i = 1; i < 3; i += 1){
+		print(i); 
+		break;
+		print(i);
+	}
+	return 0;
+}

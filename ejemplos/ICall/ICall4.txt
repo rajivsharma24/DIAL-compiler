@@ -1,0 +1,47 @@
+# Declaración y llamada de función: paso de arrays
+
+func none separador(){
+	print(1111111111);
+}
+
+func none mostrarArray(array int[3] &arr){
+	for(int i = 0; i<3; i+=1){
+		print(arr[i]);
+	}
+}
+
+func array int[3] sumarArray(array int[3] arr1,array int[3] arr2){
+	array int[3] res;
+	
+	for(int i = 0; i < 3; i+=1){
+		res[i] = arr1[i] + arr2[i];
+	}
+	
+	return res;
+}
+
+func none sumarArrayRef(array int[3] &arr1,array int[3] &arr2){
+	for(int i = 0; i < 3; i+=1){
+		arr1[i] += arr2[i];
+	}
+}
+
+
+
+func int main(){
+	array int[3] arr1 = [1,2,3];
+	array int[3] arr2 = arr1;
+	
+	
+	# Pasamos los arrays por valor y la función retorna el array con el resultado
+	array int[3] res = sumarArray(arr1,arr2);
+	mostrarArray(res);
+	
+	separador();
+	
+	# Pasamos referncias de array1 y array2 escribiendose el resultado en array1
+	sumarArrayRef(arr1,arr2);
+	mostrarArray(arr1);
+	
+	return 0;
+}

@@ -1,0 +1,30 @@
+#Asignaciones de tipos arrays múltidimensionales de structs
+
+func none separador(){
+	print(1111111111);
+}
+
+record tCelda{
+	int x;
+	bool y;
+}
+
+
+func none mostrarArray(array tCelda[2][2] array1){
+	for(int i = 0; i < 2; i+=1){
+		for(int j = 0; j < 2; j+=1){
+			print(array1[i][j].x);
+			print(array1[i][j].y);
+			separador();
+		}
+	}
+}
+
+func int main(){
+	
+	tCelda celda = {3,true};
+	array tCelda[2][2] celdas = [[celda, celda],[celda,celda]];
+	mostrarArray(celdas);
+	
+	return 0;
+}

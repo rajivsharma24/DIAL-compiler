@@ -1,0 +1,57 @@
+# Declaración y llamada de función: paso de arrays de struct
+
+func none separador(){
+	print(1111111111);
+}
+
+record tCoordenadas{
+	int x;
+	int y;
+}
+
+func tCoordenadas asignarValores(int x, int y){
+	tCoordenadas p;
+	p.x = x;
+	p.y = y;
+	return p;
+}
+
+func none mostrarStruct(tCoordenadas &coord){
+	print(coord.x);
+	print(coord.y);
+}
+
+func none mostrarArrayStructs(array tCoordenadas[2][2] mapa){
+	for(int i = 0; i < 2; i +=1){
+		for(int j = 0; j < 2; j +=1){
+			mostrarStruct(mapa[i][j]);
+		}
+	}
+	separador();
+}
+
+func none mostrarArrayStructsPorRef(array tCoordenadas[2][2] &mapa){
+	for(int i = 0; i < 2; i +=1){
+		for(int j = 0; j < 2; j +=1){
+			mostrarStruct(mapa[i][j]);
+		}
+	}
+	separador();
+}
+
+
+func int main(){
+	tCoordenadas coord = asignarValores(0,0); 
+	array tCoordenadas[2][2] mapa;
+	for(int i = 0; i < 2; i +=1){
+		for(int j = 0; j < 2; j +=1){
+			mapa[i][j] = coord;
+			coord.x = coord.x + 1;
+			coord.y = coord.y + 1;	
+		}
+	}
+	
+	mostrarArrayStructs(mapa);
+	mostrarArrayStructsPorRef(mapa);
+	return 0;
+}

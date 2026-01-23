@@ -1,0 +1,43 @@
+#Asignaciones de tipos struct de struct
+
+func none separador(){
+	print(1111111111);
+}
+
+record tPunto{
+	real x;
+	real y;
+}
+
+record tCelda{
+	int n;
+	tPunto punto;
+}
+
+
+
+func none mostrar(tCelda celda){
+	print(celda.n);
+	print(celda.punto.x);
+	print(celda.punto.y);
+}
+
+func int main(){
+	
+	"""
+	tCelda celda;
+	
+	celda.n = 3;
+	celda.punto.x = 1;
+	celda.punto.y = 1;
+	"""
+	"""
+	tPunto punto = {0,1};
+	tCelda celda = {3, punto};
+	"""
+	tCelda celda = {3, {1,1}};
+	
+	mostrar(celda);
+	
+	return 0;
+}

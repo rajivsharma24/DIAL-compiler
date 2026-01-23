@@ -1,0 +1,15 @@
+# Instrucción while simple, en cada vuelta se llama a una función
+
+func none resta(int &x){
+	x -= 1;
+}
+
+func int main(){
+	int x = 10;
+	while(x > 0){
+		resta(x);
+		print(x); # Imprime 9 8 7 6 5 4 3 2 1 0
+	}
+	
+	return 0;
+}

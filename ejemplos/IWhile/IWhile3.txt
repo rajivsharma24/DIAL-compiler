@@ -1,0 +1,17 @@
+# Instrucción while: bucles anidados
+
+func int main(){
+	real i = 0;
+	real j = 10;
+	while(i < 10){
+		while(j < 2){
+			i += 2;
+			j += 1;
+		}
+		j = 0;
+		print(i); # Imprime 0 4 8 12 
+	}
+	print(i); # Imprime 12
+	
+	return 0;
+}

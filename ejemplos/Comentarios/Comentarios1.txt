@@ -1,0 +1,15 @@
+# Ejemplos de comentarios
+
+func int main(){
+	#En este ejemplo
+#hay
+		#muchos
+	"""comentarios
+verdad?
+		a 
+	que	si"""
+	real _z = 0;
+	"""pues si
+	"""
+	return 0;
+}

@@ -1,0 +1,26 @@
+#Asignaciones de tipos arrays simples
+
+func none separador(){
+	print(1111111111);
+}
+
+func none mostrarArray(array real[3] array1){
+	for(int i = 0; i < 3; i+=1){
+		print(array1[i]);
+	}
+}
+
+func int main(){
+	
+	#Arrays simples
+	#Asignación a constante
+	array real[3] array1 = [0,readf(),readi()];
+	mostrarArray(array1);
+	
+	separador();
+	
+	#Asignación a designador
+	array real[3] array2 = array1;
+	mostrarArray(array2); 		
+	return 0;
+}

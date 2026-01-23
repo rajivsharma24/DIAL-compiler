@@ -1,0 +1,11 @@
+func int main(){
+
+	int x = 7;
+	case (x) {
+	    default: print(99);
+	    when 0: print(0); break;
+	}
+
+
+	return 0;
+}

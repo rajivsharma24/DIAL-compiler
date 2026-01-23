@@ -1,0 +1,14 @@
+# Instrucción de punteros a arrays
+func int main(){
+	array int[3]@ ptr;
+	ptr = new array int[3];
+	@ptr = [1,2,3];
+	
+	
+	
+	for (int i = 0; i < 3; i+= 1){
+		print((@ptr)[i]);
+	}
+	
+	return 0;
+}

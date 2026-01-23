@@ -1,0 +1,41 @@
+# Declaración y llamada de función: paso de struct
+
+func none separador(){
+	print(1111111111);
+}
+
+record tInfo{
+	int@ edad;
+	real altura;
+	bool mayor;
+}
+
+func tInfo asignarValores(int@ x, real y, bool z){
+	tInfo p;
+	p.edad = x;
+	p.altura = y;
+	p.mayor = z;
+	
+	return p;
+}
+
+func none mostrarStruct(tInfo &persona){
+	print(@persona.edad);
+	print(persona.altura);
+	print(persona.mayor);
+}
+
+func int main(){
+
+	int@ x = new int;
+	@x = 18;
+	# Creamos el struct mediante una función que devuelve el struct
+	tInfo p1 = asignarValores(x,1.70,true);
+	mostrarStruct(p1); # Se le pasa el struct por referencia
+	@x += 1;
+	# Aumentamos el valor de x y volvemos a mostrar
+	mostrarStruct(p1);
+	
+	
+	return 0;
+}

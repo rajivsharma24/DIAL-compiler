@@ -1,0 +1,9 @@
+func int main(){
+
+	int x = 1;
+	case (x) { #es una tonteria pero por que no?	
+	}
+	print(x);
+
+	return 0;
+}

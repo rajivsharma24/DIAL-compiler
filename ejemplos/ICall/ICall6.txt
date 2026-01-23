@@ -1,0 +1,40 @@
+# Declaración y llamada de función: paso de tipos complejos
+
+func none separador(){
+	print(1111111111);
+}
+
+record tEdad{
+	int x;
+}
+
+record tInfo{
+	tEdad@ edad;
+	real altura;
+	bool mayor;
+}
+
+func tInfo asignarValores(int x, real y, bool z){
+	tInfo p;
+	p.edad = new tEdad;
+	(@p.edad).x = x;
+	p.altura = y;
+	p.mayor = z;
+	
+	return p;
+}
+
+func none mostrarStruct(tInfo &persona){
+	print((@persona.edad).x);
+	print(persona.altura);
+	print(persona.mayor);
+}
+
+func int main(){
+	tInfo p1 = asignarValores(10,1.6,false);
+	mostrarStruct(p1);
+	
+	
+	
+	return 0;
+}

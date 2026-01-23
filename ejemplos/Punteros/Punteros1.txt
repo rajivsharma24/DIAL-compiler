@@ -1,0 +1,19 @@
+# Instrucción Asignación: punteros
+func int main() {
+        int@ ptr;
+        ptr = new int;
+        @ptr = 42;
+        print(@ptr);
+        del ptr;
+        
+        #Mas complicado
+        int@@ ptr2;
+        ptr2 = new int@;
+        @ptr2 = new int;
+        @@ptr2 = 5;
+        print(@@ptr2);
+        del @ptr2;
+        del ptr2;
+    	return 0;
+}
+

@@ -1,0 +1,12 @@
+# Operación ternaria con expresión
+
+func int main(){
+	array real[2][4] arr;
+	bool x = 4 > (2+4*2);
+	real y = x ? 1 : 0;
+	
+	print(y);
+	
+	
+	return 0;
+}

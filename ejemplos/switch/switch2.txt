@@ -1,0 +1,12 @@
+func int main(){
+
+	int x = 1;
+	case (x) {
+	    when 0: print(0); break;
+	    when 1: print(1);
+	    when 2: print(2); break;
+	    default: print(99);  # default
+	}
+
+	return 0;
+}

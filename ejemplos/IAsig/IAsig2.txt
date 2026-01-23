@@ -1,0 +1,19 @@
+#Asignaciones de tipos booleanos
+
+func none separador(){
+	print(1111111111);
+}
+
+func int main(){
+	
+	#Asignaciones básicas
+	bool x = true;
+	print(x);
+	
+	separador();
+
+	bool y = !x;
+	print(y);
+			
+	return 0;
+}

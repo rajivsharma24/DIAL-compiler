@@ -1,0 +1,12 @@
+import Modulo5;
+
+func int main(){
+	tPersona persona = persona_export;
+	print(persona.edad);
+	print(persona.mayor);
+	
+	print(persona_export.edad);
+	print(persona_export.mayor);
+	return 0;
+}
+

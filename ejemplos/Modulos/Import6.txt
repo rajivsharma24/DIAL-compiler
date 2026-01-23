@@ -1,0 +1,8 @@
+import Modulo6;
+
+func int main(){
+	print(func_arr()[1]);
+	
+	print(func_record().edad);
+	return 0;
+}

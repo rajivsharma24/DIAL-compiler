@@ -1,0 +1,15 @@
+# Operación ternaria sencilla
+int x = 1;
+
+
+
+func int main(){
+	array real[2][4] arr;
+	
+	real y = true ? x : 0;
+	
+	print(y);
+	
+	
+	return 0;
+}

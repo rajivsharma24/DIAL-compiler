@@ -1,0 +1,14 @@
+func int main(){
+
+	int x = 1;
+	case (x) {
+			
+	    when 1:
+	    when 2:
+	    when 3:
+	    default: print(42);
+	}
+
+
+	return 0;
+}

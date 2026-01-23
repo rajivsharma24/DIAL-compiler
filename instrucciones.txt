@@ -1,0 +1,11 @@
+Para compilar se puede utilizar el ejecutables compilar.sh.
+Para ejecutar,  java -cp "src:src/cup.jar" asint.Main "archivo a probar".
+Con eso tendríamos el archivo codigo.wat.
+El ejecutable wat2wasm y main.js se encuentran en la carpeta code.
+
+Nos parece de suma importancia leer la especificación del lenguaje donde detallamos los puntos fuertes del mismo.
+También en nuestros ejemplos se pueden encontrar algunas de las cosas más complicadas que podemos hacer con compatibilidad de tipos, 
+arrays de arrays y registros, accesos parciales, constantes arrays y records, módulos, switch, llamadas a función como designador, 
+expresión ternaria ? :, returns de constantes arrays y records, memoria dinámica, étc. 
+Animamos fuertemente a probar los ejemplos o algunos de ellos y entenderlos para ver la potencia del lenguaje.
+.

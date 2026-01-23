@@ -1,0 +1,42 @@
+# Declaración y llamada de función simple
+
+func none separador(){
+	print(1111111111);
+}
+
+func none mostrar(int x){
+	print(x);
+}
+
+func int suma1(int x, int y){
+	int z = x + y;
+	return z;
+}
+
+func int suma2(int x, int y){
+	return x + y;
+}
+
+func int main(){
+	int x = 1;
+	int y = 1;
+	
+	# Función simple sin retorno
+	mostrar(x);
+	
+	separador();
+	
+	# Función simple con parámetros y retorno de desig
+	int z1 = suma1(x,y);
+	print(z1);
+	print(suma1(x,y));
+	
+	separador();
+	
+	#  Función simple con parámetros y retorno de expresión
+	int z2 = suma2(x,y);
+	print(z2);
+	print(suma2(x,y));
+	
+	return 0;
+}

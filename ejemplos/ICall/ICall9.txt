@@ -1,0 +1,49 @@
+# Declaración y llamada de función: paso de arrays parciales de struct
+
+func none separador(){
+	print(1111111111);
+}
+
+record tPunto{
+	int p1;
+	int p2;
+}
+
+record tCoordenadas{
+	int x;
+	int y;
+	array tPunto[2] puntos;
+}
+
+func tCoordenadas asignarValores(int x, int y){
+	tCoordenadas p;
+	p.x = x;
+	p.y = y;
+	for(int i = 0; i < 2; i+=1){
+		p.puntos[i].p1 = x + 1;
+		p.puntos[i].p2 = y + 2;
+	}
+	return p;
+}
+
+func none mostrarStruct(tCoordenadas &coord){
+	print(coord.x);
+	print(coord.y);
+	for(int i = 0; i < 2; i +=1){
+		print(coord.puntos[i].p1);
+		print(coord.puntos[i].p2);
+	}
+}
+# 0 0 1 2 1 2
+
+func int main(){
+	tCoordenadas coord = asignarValores(0,0); 
+	
+	
+	#Mostrar directamente el 
+	mostrarStruct(asignarValores(0,0));
+	
+	print(asignarValores(0,0).puntos[1].p1);
+	
+	return 0;
+}

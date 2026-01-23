@@ -1,0 +1,13 @@
+module Modulo3
+
+func int sumar(int n1, int n2){
+	return n1 + n2;
+}
+
+export array int[3] array_export = [1,2,3];
+
+int c = 1;
+
+export func none suma1(int &n){
+	n = n+c;
+}

@@ -1,0 +1,4 @@
+module Module4
+
+array int[2][2] matriz = [[1,2],[3,4]];
+export array int[2] array_export = matriz[0];

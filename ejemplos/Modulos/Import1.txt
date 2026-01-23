@@ -1,0 +1,10 @@
+import Modulo1;
+
+int x;
+
+func int main(){
+	x = 0;
+	suma1(x);
+	print(x);
+	return 0;
+}

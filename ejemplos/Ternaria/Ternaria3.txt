@@ -1,0 +1,24 @@
+
+real c = 1;
+
+func real suma1(real x){
+	return x + c;
+}
+
+func real resta1(real x){
+	return x - c;
+}
+
+
+func int main(){
+	real x = 2.3;
+	bool exp = (x+3) > 0;
+	
+	real suma = exp ? suma1(x) : resta1(x);
+	real resta = !exp ? suma1(x) : resta1(x);
+	
+	print(suma);
+	print(resta);
+	
+	return 0;
+}

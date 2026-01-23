@@ -1,0 +1,6 @@
+import Modulo1;
+
+func int main(){
+	c +=1;
+	return 0;
+}

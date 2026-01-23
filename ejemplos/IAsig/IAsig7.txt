@@ -1,0 +1,45 @@
+#Asignaciones de tipos struct
+
+func none separador(){
+	print(1111111111);
+}
+
+record tPunto{
+	real x;
+	real y;
+}
+
+record tCoordenada{
+	int n;
+	array tPunto[3] puntos;
+}
+
+func none mostrarArray(array tCoordenada[3] coordenadas){
+	for(int i = 0; i < 3; i= i + 1){
+		separador();
+		print(coordenadas[i].n);
+		for(int j = 0; j < 3; j= j + 1){
+			print(coordenadas[i].puntos[j].x);
+			print(coordenadas[i].puntos[j].y);
+		}
+		separador();
+	} 
+}
+
+func int main(){
+	
+	tPunto punto = {0,0};
+	array tCoordenada[3] coordenadas;
+	for(int i = 0; i < 3; i= i + 1){
+		coordenadas[i].n = i;
+		for(int j = 0; j < 3; j= j + 1){
+			coordenadas[i].puntos[j] = punto;
+			punto.x = punto.x - 0.2;
+			punto.y = punto.y + 0.2;
+		}
+	} 
+	
+	mostrarArray(coordenadas);
+	
+	return 0;
+}

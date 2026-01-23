@@ -1,0 +1,41 @@
+#Asignaciones de tipos numéricos
+
+func none separador(){
+	print(1111111111);
+}
+
+func int main(){
+	
+	#Asignación entero a desig entero
+	int x = 3;
+	print(x);
+	
+	separador();
+		
+	#Asignación real a desig real
+	real y = 4.2;
+	print(y);
+	
+	separador();
+	
+	#Asignación entero a desig real, válido por compatibilidad
+	real z = x - 2;
+	print(z);
+	
+	separador();
+	
+	#Asignación real a desig entero, no válido, salta error de tipado
+	#int w = 3.2; 
+	
+	# Asignación a read
+	int a = readi();
+	print(a);
+	
+	separador();
+	
+	# Asignación a read
+	real b = readf();
+	print(b);
+		
+	return 0;
+}

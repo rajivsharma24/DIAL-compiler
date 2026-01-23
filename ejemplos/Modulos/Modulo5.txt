@@ -1,0 +1,8 @@
+module Modulo5
+
+export record tPersona{
+	int edad;
+	bool mayor;
+}
+
+export tPersona persona_export = {19, true};

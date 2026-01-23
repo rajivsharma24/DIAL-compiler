@@ -1,0 +1,11 @@
+# Instrucción while: simple
+
+func int main(){
+	real i = 0;
+	while(i < 10){
+		i += 1;
+	} 
+	print(i); # Imprime 10
+	
+	return 0;
+}

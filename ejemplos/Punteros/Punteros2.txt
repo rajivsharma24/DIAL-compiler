@@ -1,0 +1,28 @@
+# Punteros a record
+
+record tPersona{
+	int edad; 
+	bool mayor;
+}
+
+record tInfo{
+	int id;
+	tPersona@ persona;
+}
+
+func int main(){
+	tInfo@ x;
+	x = new tInfo;
+	
+	(@x).id = 2;
+	
+	tPersona@ p;
+	p = new tPersona;
+	(@p).edad = 18;
+	(@p).mayor = true;	
+	(@x).persona =p;
+	
+	print((@(@x).persona).edad);
+	print((@(@x).persona).mayor);
+	return 0;
+}

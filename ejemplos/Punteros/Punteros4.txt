@@ -1,0 +1,24 @@
+# Punteros a struct de arrays 
+
+record tArray{
+	array real[3]@ ptr_arr;
+	array int[3] arr;
+}
+
+func int main(){
+
+	
+	tArray@ struct_ptr; 
+	array int[3] x = [1,2,3];
+	
+	struct_ptr = new tArray;
+	(@struct_ptr).arr = x;
+	(@struct_ptr).ptr_arr = new array real[3];
+	@((@struct_ptr).ptr_arr) = (@struct_ptr).arr;
+	
+	for(int i = 0; i<3; i+=1){
+		print((@struct_ptr).arr[i]);
+		print((@((@struct_ptr).ptr_arr))[i]);
+	}
+	return 0;
+}

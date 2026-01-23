@@ -1,0 +1,42 @@
+# Ejemplo de return de constantes
+
+func int generaEntero(){
+	return 10;
+}
+
+func real generaReal1(){
+	return 10.5;
+}
+
+func real generaReal2(){
+	return 5;
+}
+
+func array int[3] generaArray(){
+	return [1,2,3];
+}
+
+
+func int main(){
+	
+	# Array
+	array int[3] array_cte = generaArray();
+	
+	for(int i = 0; i < 3; i+=1){
+		print(array_cte[i]);
+	}
+	
+	# Entero
+	int x = generaEntero();
+	print(x);
+	
+	# Real puro
+	real y = generaReal1();
+	print(y);
+	
+	# Real entero
+	real z = generaReal2();
+	print(z);
+	
+	return 0;
+}

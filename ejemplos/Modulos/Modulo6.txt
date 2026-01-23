@@ -1,0 +1,14 @@
+module Modulo6
+
+export func array real[3] func_arr(){
+	return [1,2,3];
+}
+
+record tPersona {
+	int edad; 
+	bool mayor;
+}
+
+export func tPersona func_record(){
+	return {20, true};
+}

@@ -1,0 +1,7 @@
+func int main(){
+	int x = readi();
+	print(x);
+	real y = readf();
+	print(y);
+	return 0;
+}

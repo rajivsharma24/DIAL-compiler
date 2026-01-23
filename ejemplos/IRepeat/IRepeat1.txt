@@ -1,0 +1,13 @@
+# Instrucción Repeat sencillo
+
+func int main(){
+	int x = 10;
+	
+	repeat(x == 0){
+		x -= 1;
+		print(x); # Imprime 9 8 7 6 5 4 3 2 1 0
+	}
+
+
+	return 0;
+}

@@ -1,0 +1,344 @@
+package asint;
+
+import java_cup.runtime.*;
+import alex.AnalizadorLexico;
+import alex.UnidadLexica;
+import alex.TokenValue;
+import errors.GestionErrores;
+import java.util.ArrayList;
+import ast.*;
+import ast.types.*;
+import ast.expressions.*;
+import ast.expressions.desigs.*;
+import ast.expressions.consts.*;
+import ast.declarations.*;
+import ast.instructions.*;
+
+scan with {: return getScanner().next_token(); :};
+parser code {: 
+   private GestionErrores errores;
+   public void syntax_error(Symbol unidadLexica) {
+     errores.errorSintactico((UnidadLexica)unidadLexica);
+   }
+   public boolean hayErrores() {
+     return errores.hayErrores();
+   }
+:};
+init with {: 
+   errores = new GestionErrores();
+   AnalizadorLexico alex = (AnalizadorLexico)getScanner();
+   alex.fijaGestionErrores(errores);
+:};
+
+
+terminal    FUNC, NONE, RETURN, NEW, DEL, NULL, RECORD, MODULE, EXPORT, IMPORT, IF, 
+            ELIF, ELSE, WHILE, FOR, REPEAT, INT, REAL, ENUM, BOOL, TRUE, FALSE, USING, 
+            BREAK, CONTINUE, CASE, WHEN, DEFAULT, PRINT, READI, READF, ARRAY, MAIN;
+            
+terminal    TokenValue IDEN, NUMENT, NUMREAL;
+
+terminal    MAS, MENOS, POR, DIV, MOD;
+
+terminal    NOT, AND, OR;
+
+terminal    IGUAL, DESIGUAL, MAYOR, MENOR, MAYORIG, MENORIG;
+
+terminal    ACCESO, REF, PUNTO, DOSPUNTOS, INTERROG;
+
+terminal    ASIG, SASIG, RASIG, MASIG, DASIG, MOASIG;
+
+terminal    PAP, PCIERRE, CAP, CCIERRE, LAP, LCIERRE, PCOMA,COMA;
+
+
+non terminal ASTNode P;
+non terminal Modulo M;
+non terminal Programa S0;
+non terminal ArrayList<DEC> S, SM;
+non terminal DECMain DECMAIN;
+non terminal DECFunc DECFUNC;
+non terminal DECReg DECREG;
+non terminal DECEnum DECENUM;
+non terminal DECAlias DECALIAS;
+non terminal DECImport DECIMPORT;
+non terminal ArrayList<Param> LCAMPOS, ARGS, ARGS1;
+non terminal ArrayList<String> LVALORES;
+non terminal T TIPOF, TIPO, TIPO1;
+non terminal Boolean ROV;
+non terminal ArrayList<I> LINST, LINSTB, LINSTC;
+non terminal I INST, BUCLE, INSTB, INSTC;
+non terminal IDec DECV;
+non terminal IAsig ASIGNACION;
+non terminal KindAsig OPASIG;
+non terminal DCall LLAMADA;
+non terminal ArrayList<E> LARGS, LARGS1;
+non terminal IIf COND;
+non terminal Ramas RAMAS, RAMAS1;
+non terminal ISwitch SWITCH;
+non terminal ArrayList<When> CASOS1, CASOS, LWHENS;
+non terminal When DEF;
+non terminal E E0, E11, E1, E2, E3, E4, E5, E6, E7, E8;
+non terminal E F0, F11, F1, F2, F3, F4, F5, F6, F7, F8;
+non terminal E CONSTANTE;
+non terminal ArrayList<E> CONSTANTEARRAY, CONSTANTEARRAY1;
+non terminal ArrayList<E> CONSTANTEREGISTRO, CONSTANTEREGISTRO1;
+non terminal D DESIG0, DESIG1, DESIG2;
+non terminal KindEBin OP1, OP2, OP3, OP4, OP5, OP6;
+non terminal KindEUn OP7;
+
+P ::= S0:p {: RESULT = p; :}  | M:p {: RESULT = p; :};
+
+M ::= MODULE IDEN:id SM:decs {:RESULT = new Modulo(decs, id.lexema);:}
+	| MODULE error SM:decs {: System.out.println("ID de módulo no válido"); RESULT = null; :};
+
+SM ::= SM:decs EXPORT DECFUNC:decf {: decf.isExport(); decs.add(decf); RESULT = decs; :}
+    | SM:decs EXPORT DECREG:decr {: decr.isExport(); decs.add(decr); RESULT = decs; :}
+    | SM:decs EXPORT DECENUM:dece {: dece.isExport(); decs.add(dece); RESULT = decs; :}
+    | SM:decs EXPORT DECALIAS:deca {: deca.isExport(); decs.add(deca); RESULT = decs; :}
+    | SM:decs EXPORT DECV:decv PCOMA {: DECVar decv2 = new DECVar(decv); decv2.isExport(); decs.add(decv2); RESULT = decs; :}
+    | SM:decs DECFUNC:decf {: decs.add(decf); RESULT = decs; :}
+    | SM:decs DECREG:decr {: decs.add(decr); RESULT = decs; :}
+    | SM:decs DECENUM:dece {: decs.add(dece); RESULT = decs; :}
+    | SM:decs DECALIAS:deca {: decs.add(deca); RESULT = decs; :}
+    | SM:decs DECV:decv PCOMA {: decs.add(new DECVar(decv)); RESULT = decs; :}
+    | {: RESULT = new ArrayList<DEC>(); :};
+
+S0 ::= S:decs {:RESULT = new Programa(decs);:};
+
+S ::= S:decs DECFUNC:decf {: decs.add(decf); RESULT = decs; :}
+    | S:decs DECREG:decr {: decs.add(decr); RESULT = decs; :}
+    | S:decs DECENUM:dece {: decs.add(dece); RESULT = decs; :}
+    | S:decs DECALIAS:deca {: decs.add(deca); RESULT = decs; :}
+    | S:decs DECV:decv PCOMA {: decs.add(new DECVar(decv)); RESULT = decs; :}
+    | S:decs DECMAIN:decm {: decs.add(decm); RESULT = decs; :}
+    | S:decs DECIMPORT:deci {: decs.add(deci); RESULT = decs; :}
+    | {: RESULT = new ArrayList<DEC>(); :};
+
+DECMAIN ::= FUNC INT MAIN PAP PCIERRE LAP LINST:inst LCIERRE {: RESULT = new DECMain(inst); :}
+	| FUNC INT MAIN error LAP LINST:inst LCIERRE {: System.out.println("Error en MAIN"); RESULT = null; :};
+
+DECREG ::= RECORD IDEN:id LAP LCAMPOS:params LCIERRE {: RESULT = new DECReg(id.lexema, params); :}
+	|	RECORD error LAP LCAMPOS:params LCIERRE {: System.out.println("ID de Record no válido"); RESULT = null; :};
+LCAMPOS ::= LCAMPOS:params TIPO:t IDEN:id PCOMA {: params.add(new Param(t, false, id.lexema)); RESULT = params; :}
+		  | LCAMPOS:params TIPO:t IDEN:id error {: System.out.println("Puede faltar ;"); RESULT = params; :}
+          | {: RESULT = new ArrayList<Param>(); :};
+
+DECENUM ::= ENUM IDEN:id LAP LVALORES:valores LCIERRE {: RESULT = new DECEnum(id.lexema, valores); :}
+		| ENUM error LAP LVALORES:valores LCIERRE {: System.out.println("ID de enumerado no válido"); RESULT = null; :};
+LVALORES ::= LVALORES:valores COMA IDEN:id {: valores.add(id.lexema); RESULT = valores; :}
+           | IDEN:id {:ArrayList<String> valores = new ArrayList<String>(); valores.add(id.lexema); RESULT = valores; :}
+           | LVALORES:valores error IDEN:id {: System.out.println("Puede faltar ,"); RESULT = valores; :};
+
+DECALIAS ::= USING IDEN:id ASIG TIPO:t PCOMA {: RESULT = new DECAlias(id.lexema, t); :} 
+		| USING IDEN:id ASIG TIPO:t error {: System.out.println("Puede faltar ;"); RESULT = null; :};
+
+DECIMPORT ::= IMPORT IDEN:id PCOMA {: RESULT = new DECImport(id.lexema); :}
+		| IMPORT IDEN:id error {: System.out.println("Puede faltar ;"); RESULT = null; :};
+
+DECFUNC ::= FUNC TIPOF:t IDEN:id PAP ARGS:args PCIERRE LAP LINST:inst LCIERRE {: RESULT = new DECFunc(t, id.lexema, args, inst); :};
+
+TIPO ::= TIPO:t ACCESO {: RESULT = new TPointer(t); :}
+       //| ARRAY TIPO1:t CAP E0:e CCIERRE {: RESULT = new TArray(t, e); :}
+       //| ARRAY TIPO1:t CAP CCIERRE {: RESULT = new TArray(t); :}
+       | ARRAY TIPO1:t CAP NUMENT:n CCIERRE {: RESULT = new TArray(t, new EInt(n.lexema)); :}
+       | error TIPO1:t CAP NUMENT:n CCIERRE {: System.out.println("Puede faltar ARRAY"); RESULT = null; :}
+       | ARRAY TIPO1:t CAP error CCIERRE {: System.out.println("Falta tamaño array"); RESULT = null; :}
+       | INT {: RESULT = new TBasico(KindT.INT); :}
+       | REAL {: RESULT = new TBasico(KindT.REAL); :}
+       | BOOL {: RESULT = new TBasico(KindT.BOOL); :}
+       | IDEN:id {: RESULT = new TIden(id.lexema); :};
+
+TIPO1 ::= TIPO:t ACCESO {: RESULT = new TPointer(t); :}
+        //| TIPO1:t CAP E0:e CCIERRE {: RESULT = new TArray(t, e); :}
+        //| TIPO1:t CAP CCIERRE {: RESULT = new TArray(t); :}
+        | TIPO1:t CAP NUMENT:n CCIERRE {: RESULT = new TArray(t, new EInt(n.lexema)); :}
+        | ARRAY TIPO1:t CAP error CCIERRE {: System.out.println("Falta tamaño array"); RESULT = null; :}
+        | INT {: RESULT = new TBasico(KindT.INT); :}
+        | REAL {: RESULT = new TBasico(KindT.REAL); :}
+        | BOOL {: RESULT = new TBasico(KindT.BOOL); :}
+        | IDEN:id {: RESULT = new TIden(id.lexema); :};
+
+TIPOF ::= TIPO:t {: RESULT = t; :}
+        | NONE {: RESULT = new TBasico(KindT.NONE); :};
+
+ARGS ::= ARGS1:a TIPO:t ROV:r IDEN:id {: a.add(new Param(t,r,id.lexema)); RESULT = a; :}
+       | {: RESULT = new ArrayList<Param>(); :};
+ARGS1 ::= ARGS1:a TIPO:t ROV:r IDEN:id COMA 
+		  {: a.add(new Param(t,r,id.lexema)); RESULT = a; :}
+         | 
+         {: RESULT = new ArrayList<Param>(); :};
+ROV ::= REF {: RESULT = Boolean.TRUE; :}
+       | {: RESULT = Boolean.FALSE; :};
+
+LINST ::= LINST:l INST:i {: l.add(i); RESULT = l; :}
+        | {: RESULT = new ArrayList<I>(); :};
+INST ::= DECV:decv PCOMA {: RESULT = decv; :}
+       | ASIGNACION:a PCOMA {: RESULT = a; :}
+       | LLAMADA:l PCOMA {: RESULT = new ICall(l); :}
+       | BUCLE:b {: RESULT = b; :}
+       | COND:c {: RESULT = c; :}
+       | SWITCH:s {: RESULT = s; :}
+       | RETURN E0:e PCOMA {: RESULT = new IReturn(e); :}
+       | RETURN PCOMA {: RESULT = new IReturn(); :}
+       | PRINT PAP E0:e PCIERRE PCOMA {: RESULT = new IPrint(e); :}
+       | DEL DESIG0:d PCOMA {: RESULT = new IDel(d); :}
+       | DECV:decv error {: System.out.println("Puede faltar ;"); RESULT = null; :}
+       | ASIGNACION:a error {: System.out.println("Puede faltar ;"); RESULT = null; :}
+       | LLAMADA:l error {: System.out.println("Puede faltar ;"); RESULT = null; :}
+       | RETURN E0:e error {: System.out.println("Puede faltar ;"); RESULT = null; :}
+       | RETURN error {: System.out.println("Puede faltar ;"); RESULT = null; :}
+       | PRINT PAP E0:e PCIERRE error {: System.out.println("Puede faltar ;"); RESULT = null; :}
+       | DEL DESIG0:d error {: System.out.println("Puede faltar ;"); RESULT = null; :};
+
+DECV ::= TIPO:t IDEN:id {: RESULT = new IDec(t, id.lexema); :}
+       | TIPO:t IDEN:id ASIG E0:e {: RESULT = new IDec(t, id.lexema, e); :};
+
+ASIGNACION ::= DESIG0:d OPASIG:op E0:e {: RESULT = new IAsig(d, e, op); :};
+OPASIG ::= ASIG {: RESULT = KindAsig.ASIG; :}
+         | SASIG {: RESULT = KindAsig.SASIG; :}
+         | RASIG {: RESULT = KindAsig.RASIG; :}
+         | MASIG {: RESULT = KindAsig.MASIG; :}
+         | DASIG {: RESULT = KindAsig.DASIG; :}
+         | MOASIG {: RESULT = KindAsig.MOASIG; :};
+
+LLAMADA ::= IDEN:id PAP LARGS:args PCIERRE {: RESULT = new DCall(id.lexema, args); :};
+LARGS ::= LARGS1:args E0:e {: args.add(e); RESULT = args; :}
+        | {: RESULT = new ArrayList<E>(); :};
+LARGS1 ::= LARGS1:args E0:e COMA {: args.add(e); RESULT = args; :}
+         | {: RESULT = new ArrayList<E>(); :};
+
+BUCLE ::= WHILE PAP E0:e PCIERRE LAP LINSTB:inst LCIERRE {: RESULT = new IWhile(e, inst); :}
+		| REPEAT PAP E0:e PCIERRE LAP LINSTB:inst LCIERRE {: RESULT = new IRepeat(e, inst); :}
+        | FOR PAP DECV:d PCOMA E0:e PCOMA ASIGNACION:a PCIERRE LAP LINSTB:inst LCIERRE 
+        {: RESULT = new IFor(d, e, a, inst); :};
+            
+
+LINSTB ::= LINSTB:l INSTB:i {: l.add(i); RESULT = l; :}
+         | {: RESULT = new ArrayList<I>(); :};
+INSTB ::= INST:i {: RESULT = i; :}
+        | BREAK PCOMA {: RESULT = new IBreak(); :} 
+        | CONTINUE PCOMA {: RESULT = new IContinue(); :}
+        | BREAK error {: System.out.println("Puede faltar ;"); RESULT = null; :} 
+        | CONTINUE error {: System.out.println("Puede faltar ;"); RESULT = null; :};
+
+COND ::= IF PAP E0:e PCIERRE LAP LINST:inst LCIERRE RAMAS:r {: RESULT = new IIf(e, inst, r); :};
+RAMAS ::= RAMAS1:r ELSE LAP LINST:inst LCIERRE {: r.addElse(inst); RESULT = r; :}
+        | RAMAS1:r {: RESULT = r; :};
+RAMAS1 ::= RAMAS1:r ELIF PAP E0:e PCIERRE LAP LINST:inst LCIERRE {: r.addElif(e,inst); RESULT = r; :}
+		| {: RESULT = new Ramas(); :};
+
+SWITCH ::= CASE PAP E0:e PCIERRE LAP CASOS1:w LCIERRE {: RESULT = new ISwitch(e, w); :};
+CASOS1 ::= CASOS:w {: RESULT = w; :} | LWHENS:w {: RESULT = w; :};
+CASOS ::= LWHENS:w DEF:d {: w.add(d); RESULT = w; :}
+        | CASOS:w WHEN E0:e DOSPUNTOS LINSTC:inst {: w.add(new When(e,inst)); RESULT = w; :};
+        
+        
+DEF ::= DEFAULT DOSPUNTOS LINSTC:inst {: RESULT = new When(inst); :};
+LWHENS ::= LWHENS:w WHEN E0:e DOSPUNTOS LINSTC:inst {: w.add(new When(e,inst)); RESULT = w; :}
+         | {:  RESULT = new ArrayList<When>(); :};
+
+LINSTC ::= LINSTC:l INSTC:i {: l.add(i); RESULT = l; :}
+         | {: RESULT = new ArrayList<I>(); :};
+INSTC ::= INST:i {: RESULT = i; :}
+        | BREAK PCOMA {: RESULT = new IBreak(); :};
+
+E7 ::= NOT E7:e {: RESULT = new EUn(e, KindEUn.NOT); :}
+     | E8:e {: RESULT = e; :}; 
+E11 ::= OP7:op E11:e {: RESULT = new EUn(e, op); :}
+      | E7:e {: RESULT = e; :};
+E6 ::= E6:e1 OP1:op E11:e2 {: RESULT = new EBin(e1, e2, op); :}
+     | E11:e {: RESULT = e; :};
+E5 ::= E5:e1 OP2:op E6:e2 {: RESULT = new EBin(e1, e2, op); :}
+     | E6:e {: RESULT = e; :};
+E4 ::= E4:e1 OP3:op E5:e2 {: RESULT = new EBin(e1, e2, op); :}
+     | E5:e {: RESULT = e; :};
+E3 ::= E3:e1 OP4:op E4:e2 {: RESULT = new EBin(e1, e2, op); :}
+     | E4:e {: RESULT = e; :}; 
+E2 ::= E2:e1 OP5:op E3:e2 {: RESULT = new EBin(e1, e2, op); :}
+     | E3:e {: RESULT = e; :};
+E1 ::= E1:e1 OP6:op E2:e2 {: RESULT = new EBin(e1, e2, op); :}
+     | E2:e {: RESULT = e; :};
+E0 ::= E1:e1 INTERROG E0:e2 DOSPUNTOS E0:e3 {: RESULT = new ETer(e1, e2, e3); :}
+     | E1:e {: RESULT = e; :};
+E8 ::= DESIG0:d {: RESULT = d; :}
+     | CONSTANTE:c {: RESULT = c; :}
+     | PAP F0:f PCIERRE {: RESULT = f; :}
+     | NEW TIPO:t {: RESULT = new ENew(t); :}
+     | READI PAP PCIERRE {: RESULT = new ERead(false); :}
+     | READF PAP PCIERRE {: RESULT = new ERead(true); :};
+
+F7 ::= NOT E7:e {: RESULT = new EUn(e, KindEUn.NOT); :}
+     | F8:e {: RESULT = e; :}; 
+F11 ::= OP7:op E11:e {: RESULT = new EUn(e, op); :}
+      | F7:e {: RESULT = e; :};
+F6 ::= E6:e1 OP1:op E11:e2 {: RESULT = new EBin(e1, e2, op); :}
+     | F11:e {: RESULT = e; :};
+F5 ::= E5:e1 OP2:op E6:e2 {: RESULT = new EBin(e1, e2, op); :}
+     | F6:e {: RESULT = e; :};
+F4 ::= E4:e1 OP3:op E5:e2 {: RESULT = new EBin(e1, e2, op); :}
+     | F5:e {: RESULT = e; :};
+F3 ::= E3:e1 OP4:op E4:e2 {: RESULT = new EBin(e1, e2, op); :}
+     | F4:e {: RESULT = e; :}; 
+F2 ::= E2:e1 OP5:op E3:e2 {: RESULT = new EBin(e1, e2, op); :}
+     | F3:e {: RESULT = e; :};
+F1 ::= E1:e1 OP6:op E2:e2 {: RESULT = new EBin(e1, e2, op); :}
+     | F2:e {: RESULT = e; :};
+F0 ::= E1:e1 INTERROG E0:e2 DOSPUNTOS E0:e3 {: RESULT = new ETer(e1, e2, e3); :}
+     | F1:e {: RESULT = e; :};
+F8 ::= CONSTANTE:c {: RESULT = c; :}
+     | PAP F0:f PCIERRE {: RESULT = f; :}
+     | NEW TIPO:t {: RESULT = new ENew(t); :};
+
+CONSTANTE ::= NUMENT:n {: RESULT = new EInt(n.lexema); :}
+            | NUMREAL:r {: RESULT = new EReal(r.lexema); :}
+            | TRUE {: RESULT = new ETrue(); :}
+            | FALSE {: RESULT = new EFalse(); :}
+            | CONSTANTEARRAY:a {: RESULT = new EArray(a); :}
+            | CONSTANTEREGISTRO:r {: RESULT = new ERecord(r); :}
+            | NULL {: RESULT = new ENull(); :};
+/*
+CONSTANTEARRAY ::= CAP CCIERRE {: RESULT = new ArrayList<E>(); :}
+                 | CAP CONSTANTEARRAY1:a CCIERRE {: RESULT = a; :};
+CONSTANTEARRAY1 ::= E0:e {: ArrayList<E> l = new ArrayList<E>(); l.add(e); RESULT = l; :}
+                  | E0:e COMA CONSTANTEARRAY1:l {: l.add(e); RESULT = l; :};
+CONSTANTEREGISTRO ::= LAP LCIERRE {: RESULT = new ArrayList<E>(); :}
+                    | LAP CONSTANTEREGISTRO1:r LCIERRE {: RESULT = r; :};
+CONSTANTEREGISTRO1 ::= E0:e {: ArrayList<E> l = new ArrayList<E>(); l.add(e); RESULT = l; :}
+                     | E0:e COMA CONSTANTEREGISTRO1:l {: l.add(e); RESULT = l; :};
+*/
+
+CONSTANTEARRAY ::= CAP CCIERRE {: RESULT = new ArrayList<E>(); :}
+                 | CAP CONSTANTEARRAY1:a CCIERRE {: RESULT = a; :};
+CONSTANTEARRAY1 ::= E0:e {: ArrayList<E> l = new ArrayList<E>(); l.add(e); RESULT = l; :}
+                  | CONSTANTEARRAY1:l COMA E0:e {: l.add(e); RESULT = l; :};
+CONSTANTEREGISTRO ::= LAP LCIERRE {: RESULT = new ArrayList<E>(); :}
+                    | LAP CONSTANTEREGISTRO1:r LCIERRE {: RESULT = r; :};
+CONSTANTEREGISTRO1 ::= E0:e {: ArrayList<E> l = new ArrayList<E>(); l.add(e); RESULT = l; :}
+                     | CONSTANTEREGISTRO1:l COMA E0:e {: l.add(e); RESULT = l; :};
+
+DESIG1 ::= DESIG1:d PUNTO IDEN:id {: RESULT = new DStruct(d, id.lexema); :}
+         | DESIG1:d CAP E0:e CCIERRE {: RESULT = new DArray(d, e); :}
+         | DESIG2:d {: RESULT = d; :};
+DESIG0 ::= ACCESO DESIG0:d {: RESULT = new DPointer(d); :}
+         | DESIG1:d {: RESULT = d; :};
+DESIG2 ::= IDEN:id {: RESULT = new DIden(id.lexema); :}
+         | LLAMADA:l {: RESULT = l; :}
+         | PAP DESIG0:d PCIERRE {: RESULT = d; :};
+
+OP1 ::= POR {: RESULT = KindEBin.POR; :}
+      | DIV {: RESULT = KindEBin.DIV; :}
+      | MOD {: RESULT = KindEBin.MOD; :};
+OP2 ::= MAS {: RESULT = KindEBin.MAS; :}
+      | MENOS {: RESULT = KindEBin.MENOS; :};
+OP3 ::= MAYOR {: RESULT = KindEBin.MAYOR; :}
+      | MENOR {: RESULT = KindEBin.MENOR; :}
+      | MAYORIG {: RESULT = KindEBin.MAYORIG; :}
+      | MENORIG {: RESULT = KindEBin.MENORIG; :}; 
+OP4 ::= IGUAL {: RESULT = KindEBin.IGUAL; :}
+      | DESIGUAL {: RESULT = KindEBin.DESIGUAL; :};
+OP5 ::= AND {: RESULT = KindEBin.AND; :};
+OP6 ::= OR {: RESULT = KindEBin.OR; :};
+OP7 ::= MAS {: RESULT = KindEUn.MAS; :}
+      | MENOS {: RESULT = KindEUn.MENOS; :};
+      
+      
+      

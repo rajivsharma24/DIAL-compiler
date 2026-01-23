@@ -1,0 +1,9 @@
+# Import de una array entero
+import Modulo3;
+
+func int main(){
+	for(int i = 0; i < 3; i+=1){
+		print(array_export[i]);
+	}
+	return 0;
+}
