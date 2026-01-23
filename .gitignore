@@ -1,0 +1,30 @@
+#OS / Editors
+
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+#Java build artifacts
+
+*.class
+out/
+bin/
+build/
+target/
+
+#Node
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+#Generated compiler outputs (treat as build artifacts)
+
+code/codigo.wat
+code/codigo.wasm
+
+#Eclipse workspace metadata (should NOT be versioned)
+
+.metadata/
