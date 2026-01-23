@@ -46,6 +46,14 @@ For the full language specification, see: `Especificación_DIAL.pdf` (recommende
   * `main.js` — Node.js runner (imports for I/O and exception handling)
   * `codigo.wat` / `codigo.wasm` — generated outputs (recommended to be treated as build artifacts)
 
+## Language specification
+
+The formal language specification is included in this repository:
+
+- `Especificación_DIAL.pdf` — DIAL language specification (syntax, semantics, and supported features).
+
+This document is the reference for the compiler implementation and the expected behavior of the examples under `ejemplos/`.
+
 ## How to build the compiler
 
 From repository root:
