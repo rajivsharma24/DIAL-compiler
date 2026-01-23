@@ -27,7 +27,7 @@ DIAL supports a rich feature set for a student compiler project, including:
 * **Pointers and dynamic memory**: `T@`, `new`, dereference with `@`, and `del`
 * **Composite literals**: array/record literals and returning them from functions
 
-For the full language specification, see: `Especificación_DIAL.pdf` (recommended to keep under `docs/` in this repo).
+* “Architecture overview: see `docs/architecture.md`.”
 
 ## Project structure
 
@@ -127,6 +127,7 @@ In particular, you will find examples covering:
 * **Dynamic memory**: pointer types (`T@`), `new`, dereference (`@`), and `del`, including combinations with records/arrays and boundary/error cases.
 
 These examples are meant to be read as both **documentation of language expressiveness** and **regression tests** for the compiler pipeline and the WebAssembly backend.
+
 
 ## License
 
