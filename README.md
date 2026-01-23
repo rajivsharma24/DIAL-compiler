@@ -50,7 +50,7 @@ For the full language specification, see: `Especificación_DIAL.pdf` (recommende
 
 The formal language specification is included in this repository:
 
-- `Especificación_DIAL.pdf` — DIAL language specification (syntax, semantics, and supported features).
+- `docs/Especificación_DIAL.pdf` — DIAL language specification (syntax, semantics, and supported features).
 
 This document is the reference for the compiler implementation and the expected behavior of the examples under `ejemplos/`.
 
