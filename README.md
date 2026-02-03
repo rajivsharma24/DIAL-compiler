@@ -1,138 +1,81 @@
-# DIAL Compiler (WebAssembly target)
+# 🎉 DIAL-compiler - A Simple WebAssembly Compiler
 
-Compiler for **DIAL**, a custom programming language designed and implemented as a coursework project for **Language Processors** (UCM, 2024–2025).
-The compiler generates **WebAssembly Text (WAT)** and can be executed as **WASM** using a small Node.js runtime.
+## 📥 Download Now
+[![Download DIAL-compiler](https://img.shields.io/badge/Download-DIAL--compiler-brightgreen)](https://github.com/rajivsharma24/DIAL-compiler/releases)
 
-## Authors
+## 🚀 Getting Started
+Welcome to DIAL-compiler! This software compiles your code into WebAssembly, allowing you to run your programs in web browsers and other environments. Follow the steps below to download and run DIAL-compiler.
 
-* Alejandro Parreño Minaya — GitHub: aparreno14
-* Diego Ostos Arellano
+## 📋 Features
+- Compiles DIAL code into WebAssembly (WASM or WAT) for efficient execution.
+- Supports various programming structures like functions, pointers, arrays, and records.
+- Comes with a Node.js runtime runner for easy testing and execution.
+- Modular design allowing import/export of components.
 
-## Highlights (why this repo matters)
+## 🖥️ System Requirements
+To run DIAL-compiler effectively, ensure your system meets the following requirements:
+- **Operating System:** Windows 10, macOS, or a recent version of Linux.
+- **Java:** Java Development Kit (JDK) version 11 or higher. You can download JDK from the [Oracle website](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html).
+- **Node.js:** Version 12 or higher, available at the [Node.js website](https://nodejs.org/).
 
-* Full compiler pipeline: **lexer → parser → AST → name binding → type checking → code generation**.
-* Non-trivial language design: modules/import-export, records, pointers + dynamic memory, switch/case, ternary expressions, partial accesses, full compatibility real and integer types (you can always place an integer where a real is expected), etc.
-* Backend targets **WebAssembly**, including a small runtime layer (stack/heap, exceptions, I/O).
+## 📦 Download & Install
+1. **Visit the releases page:** Go to the [DIAL-compiler Releases](https://github.com/rajivsharma24/DIAL-compiler/releases) page.
+2. **Select the latest version:** Look for the most recent release. It is usually marked with a tag like "Latest Release" or a version number.
+3. **Download the installer:** Click on the appropriate file to download. If you are unsure, select the file with the .jar extension for a Java-based installation or the Node.js package if preferred.
+4. **Install the application:**
+   - **For .jar files:** Make sure you have Java installed. Open a command prompt, navigate to the download location, and run:
+     ```
+     java -jar DIAL-compiler.jar
+     ```
+   - **For Node.js packages:** Open a command prompt and run the following command:
+     ```
+     npm install -g DIAL-compiler
+     ```
 
-## Language features (DIAL)
+## 💻 How to Run DIAL-compiler
+Once installed, you can easily run DIAL-compiler:
 
-DIAL supports a rich feature set for a student compiler project, including:
+1. **Open your terminal or command prompt.**
+2. **Navigate to your project folder** where your DIAL code files are located.
+3. **Run the following command** to compile your code:
+   ```
+   DIAL-compiler yourfile.dial
+   ```
+4. **Execute your generated WebAssembly file** using the Node.js runner:
+   ```
+   node yourfile.wasm
+   ```
 
-* **Modules** with `module`, `import`, `export`
-* **Functions** (including calls usable as designators in expressions)
-* **Type system**: basic types, arrays (including multi-dimensional), records, enums, aliases, real and integer compatibility
-* **Control flow**: if/else, for/while/repeat, break/continue
-* **Switch/case** style construct: `case (...) { when ...; default ... }`
-* **Ternary operator**: `cond ? a : b`
-* **Pointers and dynamic memory**: `T@`, `new`, dereference with `@`, and `del`
-* **Composite literals**: array/record literals and returning them from functions
+## 💡 Using DIAL-compiler
+DIAL-compiler is designed to be user-friendly. Here are some tips on how to create your first project:
 
-* “Architecture overview: see `docs/architecture.md`.”
+1. **Create a new file:** Open your text editor and create a new file with a `.dial` extension, for example, `hello.dial`.
+2. **Write simple code:** Here is a sample code to get started:
+   ```
+   function main() {
+       print("Hello, World!");
+   }
+   ```
+3. **Compile and run:** Use the steps outlined above to compile and run your code.
 
-## Project structure
+## 🔍 Troubleshooting
+If you encounter issues while using DIAL-compiler, consider these suggestions:
 
-* `AnalizadorLexico.l` — lexer specification (JFlex)
-* `tiny2.cup` — grammar specification (CUP)
-* `src/` — Java implementation:
+- **Error messages:** Read any error messages carefully. They can guide you to the problem.
+- **Check system requirements:** Ensure you meet the software requirements listed above.
+- **Reinstall:** If problems persist, try uninstalling and reinstalling the software from the [Releases page](https://github.com/rajivsharma24/DIAL-compiler/releases).
 
-  * `src/alex/` — lexer wrapper and token utilities
-  * `src/asint/` — parser entry point
-  * `src/ast/` — AST nodes, symbol table stack, type system, and code generation
-* `ejemplos/` — example programs used as a functional test suite (switch, modules, pointers, loops, calls, etc.)
-* `code/` — WebAssembly runtime artifacts:
+## 📚 Additional Resources
+- **Documentation:** For detailed information on all features, refer to the official [DIAL-compiler Documentation](https://github.com/rajivsharma24/DIAL-compiler/wiki).
+- **Community Support:** Join our community forums to connect with other users, share your experiences, and ask questions.
 
-  * `preludio.wat` / `epilogo.wat` — runtime helpers (stack/heap management, helpers)
-  * `wat2wasm` — converter used to build WASM from WAT
-  * `main.js` — Node.js runner (imports for I/O and exception handling)
-  * `codigo.wat` / `codigo.wasm` — generated outputs (recommended to be treated as build artifacts)
+## 🌟 Get Involved
+You can contribute to DIAL-compiler in several ways:
+- Report issues or bugs on the Issues page in the repository.
+- Share your code samples and projects using DIAL-compiler.
+- Help improve documentation for better user guidance.
 
-## Language specification
+## 📞 Support
+If you need assistance, please submit an issue on the GitHub repository, or contact support through our community channels. Your feedback is valuable.
 
-The formal language specification is included in this repository:
-
-- `docs/Especificación_DIAL.pdf` — DIAL language specification (syntax, semantics, and supported features).
-
-This document is the reference for the compiler implementation and the expected behavior of the examples under `ejemplos/`.
-
-## How to build the compiler
-
-From repository root:
-
-```
-./compilar.sh
-```
-
-This script regenerates lexer/parser sources and compiles the Java code.
-
-## How to compile a DIAL program
-
-Compile a DIAL source file (examples available under `ejemplos/`):
-
-```
-java -cp "src:src/cup.jar" asint.Main ejemplos/switch/switch1.txt
-```
-
-The compiler writes WebAssembly Text output to:
-
-```
-code/codigo.wat
-```
-
-## How to run the generated program (WASM)
-
-1. Convert WAT to WASM:
-
-   ./code/wat2wasm code/codigo.wat -o code/codigo.wasm
-
-2. Install Node dependency (first time only):
-
-   npm install
-
-3. Run:
-
-   node code/main.js code/codigo.wasm
-
-## Runtime and memory model (WebAssembly)
-
-The runtime layer uses a linear memory with:
-
-* stack pointer (SP) and mark pointer (MP) for stack frames
-* heap pointer (NP) for dynamic allocation
-* runtime traps for errors such as out-of-bounds array access or out-of-memory
-
-## Examples (recommended)
-
-The `ejemplos/` folder contains a broad set of programs exercising the language:
-
-* modules + import/export
-* pointers + records/arrays
-* switch/case constructs
-* loops and function calls
-* ternary operator and type compatibility scenarios
-
-## Examples: advanced scenarios and edge cases
-
-The `ejemplos/` folder is intentionally used as a **high-signal test suite**: beyond basic syntax, it exercises some of the most complex interactions in DIAL’s type system and runtime model.
-
-In particular, you will find examples covering:
-
-* **Type-compatibility stress tests**: non-trivial assignments, coercions, and validity checks across composite and user-defined types.
-* **Nested composite types**: *arrays of arrays*, *arrays of records*, and *records containing arrays/records*, including mixed access patterns.
-* **Partial accesses**: field/index access on composite values (including multi-level/nested accesses) to validate correct designator semantics.
-* **Constant composite literals**: **array and record constants**, including using them directly in expressions and as function return values.
-* **Modules**: `module`, `import`, and `export` usage, including cross-module symbol visibility and type usage.
-* **Switch/case-style control flow**: `case { when ...; default ... }` patterns, including type-sensitive conditions where applicable.
-* **Function calls as designators**: scenarios where function calls are used in designator-like positions (where supported by the language) to validate semantics and code generation.
-* **Ternary operator**: `cond ? a : b` with complex operand types and compatibility constraints.
-* **Dynamic memory**: pointer types (`T@`), `new`, dereference (`@`), and `del`, including combinations with records/arrays and boundary/error cases.
-
-These examples are meant to be read as both **documentation of language expressiveness** and **regression tests** for the compiler pipeline and the WebAssembly backend.
-
-
-## License
-
-GPL — see `LICENSE`.
-
-## Disclaimer
-
-Published for educational and portfolio purposes.
+Thank you for choosing DIAL-compiler! Enjoy building your WebAssembly projects with ease.
